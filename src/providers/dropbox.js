@@ -18,7 +18,7 @@ function upload(filePath, authOptions) {
       })
 
       dbx.filesUpload({
-        path: "/" + filePath,
+        path: path.join("/", filePath),
         contents: fs.readFileSync(filePath),
         autorename:true
       }).then(function(response) {
