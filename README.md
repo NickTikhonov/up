@@ -7,7 +7,7 @@ up
 ## installation
 
 ```
-npm install -g up-cli
+npm install -g up-cmd
 ```
 
 ## use
