@@ -9,6 +9,7 @@ var tmp = require("tmp")
 var upload = require("./src/uploader")
 var getOptions = require("./src/options")
 var pathIsSource = require("./src/fileType")
+var Bobber = require("./src/bobber")
 
 program
   .arguments("<file..>")
@@ -37,6 +38,8 @@ function handleArgUpload(options) {
     }
   })
 
+  var bob = new Bobber()
+  bob.start()
 
   var uploads = []
   filePaths.forEach(function(path) {
@@ -49,6 +52,7 @@ function handleArgUpload(options) {
   })
   Promise.all(uploads)
   .then(function (urls) {
+    bob.stop()
     urls.forEach(function(url) {
       console.log(url)
     })

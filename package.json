@@ -18,9 +18,10 @@
   "dependencies": {
     "commander": "^2.9.0",
     "dropbox": "^2.5.2",
+    "has-unicode": "^2.0.1",
     "md5": "^2.2.1",
-    "request": "^2.81.0",
     "prompt": "^1.0.0",
+    "request": "^2.81.0",
     "tmp": "0.0.31"
   }
 }
