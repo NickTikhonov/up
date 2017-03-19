@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "up": "./index.js",
+    "up": "./index.js"
   },
   "repository": {
     "type": "git",
@@ -16,6 +16,7 @@
   "author": "Alex Ungurianu, Nick Tikhonov",
   "license": "MIT",
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "tmp": "0.0.31"
   }
 }
