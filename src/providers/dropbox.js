@@ -17,25 +17,27 @@ function upload(filePath, authOptions) {
         accessToken: authOptions.accessToken
       })
 
-      dbx.filesUpload({
-        path: path.join("/", filePath),
-        contents: fs.readFileSync(filePath),
-        autorename:true
-      }).then(function(response) {
-        return dbx.sharingCreateSharedLink({
-          path: response.path_lower,
-          short_url:true
+      fs.readFile(filePath, function(err, data) {
+        dbx.filesUpload({
+          path: "/" + filePath,
+          contents: data,
+          autorename:true
+        }).then(function(response) {
+          return dbx.sharingCreateSharedLink({
+            path: response.path_lower,
+            short_url:true
+          })
         })
-      })
-      .then(function(result) {resolve(result.url)})
-      .catch(function(err) {
-        console.log(err);
-        let actualError = JSON.parse(err.error)
-        if(actualError.error.reason[".tag"] == "conflict") {
-          reject(errors.FILE_UPLOAD_CONFLICT)
-        } else {
-          reject(errors.UNKNOWN_ERROR)
-        }
+        .then(function(result) {resolve(result.url)})
+        .catch(function(err) {
+          console.log(err);
+          let actualError = JSON.parse(err.error)
+          if(actualError.error.reason[".tag"] == "conflict") {
+            reject(errors.FILE_UPLOAD_CONFLICT)
+          } else {
+            reject(errors.UNKNOWN_ERROR)
+          }
+        })
       })
     }
   })
