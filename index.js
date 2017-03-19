@@ -30,9 +30,8 @@ function handleArgUpload() {
 
   var uploads = []
   filePaths.forEach(function(path) {
-    uploads.push(upload(path, "Dropbox"))
+    uploads.push(upload(path, "dropbox"))
   })
-
   Promise.all(uploads)
   .then(function (urls) {
     urls.forEach(function(url) {

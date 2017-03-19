@@ -6,7 +6,7 @@ const path = require("path")
 const Dropbox = require("dropbox")
 const md5 = require("md5")
 
-const errors = require("./errors.js")
+const errors = require("../errors.js")
 
 function getKey() {
   return process.env.UP_DROPBOX_KEY
@@ -35,7 +35,9 @@ function upload(filePath) {
           short_url:true
         })
       })
-      .then(resolve)
+      .then(function(result) {
+        resolve(result.url)
+      })
       .catch(function(err) {
         let actualError = JSON.parse(err.error)
         if(actualError.error.reason[".tag"] == "conflict") {
