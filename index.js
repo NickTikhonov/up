@@ -56,7 +56,9 @@ function handleArgUpload(options) {
 }
 
 function handlePipeInputUpload(options) {
-  tmp.file(function(err, path, fd, cleanup) {
+  tmp.file({
+    postfix: '.txt'
+  }, function(err, path, fd, cleanup) {
     if (err) {
       console.log(err)
       process.exit(1)
