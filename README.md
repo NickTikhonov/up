@@ -27,7 +27,7 @@ up file.txt
 command output:
 
 ```
-cat /usr/share/dict | grep "aba" | up
+cat /usr/share/dict/words | grep "aba" | up
 ```
 
 ## features
