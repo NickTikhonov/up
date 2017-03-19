@@ -8,6 +8,7 @@ var tmp = require("tmp")
 
 var upload = require("./src/uploader")
 var getOptions = require("./src/options")
+var pathIsSource = require("./src/fileType")
 
 program
   .arguments("<file..>")
@@ -36,9 +37,15 @@ function handleArgUpload(options) {
     }
   })
 
+
   var uploads = []
   filePaths.forEach(function(path) {
-    uploads.push(upload(path, "dropbox", options))
+    uploads.push(new Promise(function(resolve, reject) {
+      pathIsSource(path).then(function(isSource) {
+        var provider = isSource ? "gist" : "dropbox"
+        upload(path, provider, options).then(resolve).catch(reject)
+      }).catch(reject)
+    }))
   })
   Promise.all(uploads)
   .then(function (urls) {
@@ -49,7 +56,9 @@ function handleArgUpload(options) {
 }
 
 function handlePipeInputUpload(options) {
-  tmp.file(function(err, path, fd, cleanup) {
+  tmp.file({
+    postfix: '.txt'
+  }, function(err, path, fd, cleanup) {
     if (err) {
       console.log(err)
       process.exit(1)

@@ -1,9 +1,9 @@
 "use strict"
 
+const fs = require("fs")
+
 const path = require("path")
-
 const request = require("request")
-
 const errors = require("../errors.js")
 
 function genRequestJson(filePath) {
