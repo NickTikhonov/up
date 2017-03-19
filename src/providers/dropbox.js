@@ -27,7 +27,7 @@ function upload(filePath, authOptions) {
           short_url:true
         })
       })
-      .then(function(result) {console.log(result); resolve(result.url)})
+      .then(function(result) {resolve(result.url)})
       .catch(function(err) {
         console.log(err);
         let actualError = JSON.parse(err.error)
