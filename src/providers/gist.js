@@ -4,6 +4,8 @@ const path = require("path")
 
 const request = require("request")
 
+const errors = require("../errors.js")
+
 function genRequestJson(filePath) {
   var fileContent = fs.readFileSync(filePath, 'utf-8')
   var reqJson = {
@@ -32,7 +34,7 @@ function upload(path) {
           reject(errors.UNKNOWN_ERROR)
         }
         else {
-          resolve(body.url)
+          resolve(body.html_url)
         }
       })
   })
