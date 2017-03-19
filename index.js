@@ -9,6 +9,7 @@ var tmp = require("tmp")
 var upload = require("./src/uploader")
 var getOptions = require("./src/options")
 var pathIsSource = require("./src/fileType")
+var Bobber = require("./src/bobber")
 
 program
   .arguments("<file..>")
@@ -37,6 +38,8 @@ function handleArgUpload(options) {
     }
   })
 
+  var bob = new Bobber()
+  bob.start()
 
   var uploads = []
   filePaths.forEach(function(path) {
@@ -49,6 +52,7 @@ function handleArgUpload(options) {
   })
   Promise.all(uploads)
   .then(function (urls) {
+    bob.stop()
     urls.forEach(function(url) {
       console.log(url)
     })
@@ -56,6 +60,9 @@ function handleArgUpload(options) {
 }
 
 function handlePipeInputUpload(options) {
+  var bob = new Bobber()
+  bob.start()
+
   tmp.file({
     postfix: '.txt'
   }, function(err, path, fd, cleanup) {
@@ -68,7 +75,10 @@ function handlePipeInputUpload(options) {
       .then(function() {
         return upload(path, "dropbox", options)
       })
-      .then(console.log)
+      .then(function(url) {
+        bob.stop()
+        console.log(url)
+      })
       .catch(function(err) {
         console.log(err)
       })
