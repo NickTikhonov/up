@@ -6,10 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "up": "./index.js"
+  },
   "repository": {
     "type": "git",
     "url": "github.com/NickTikhonov/up"
   },
   "author": "Alex Ungurianu, Nick Tikhonov",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
 }
