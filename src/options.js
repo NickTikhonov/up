@@ -1,4 +1,6 @@
 var fs = require("fs")
+var path = require("path")
+
 var prompt = require("prompt")
 var errors = require("./errors.js")
 
@@ -21,7 +23,7 @@ function getOptions() {
     if (optionsFileExists()) {
       readOptionsFile().then(resolve).catch(reject)
     } else {
-      createOptionsThroughUserEntry().then(writeToOptonsFile).then(resolve).catch(reject)
+      createOptionsThroughUserEntry().then(writeToOptionsFile).then(resolve).catch(reject)
     }
   })
 }
@@ -34,7 +36,8 @@ var defaultConfig = {
   }
 }
 
-var OPTIONS_FILE = "~/.up.json"
+var HOME = process.env.HOME || process.env.USERPROFILE
+var OPTIONS_FILE = path.join(HOME, ".up.json")
 
 function createOptionsThroughUserEntry() {
   return new Promise(function(resolve, reject) {

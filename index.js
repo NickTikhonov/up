@@ -6,19 +6,27 @@ var fs = require("fs")
 var program = require("commander")
 var tmp = require("tmp")
 
-var upload = require("./src/uploader.js")
+var upload = require("./src/uploader")
+var getOptions = require("./src/options")
 
 program
   .arguments("<file..>")
   .parse(process.argv)
 
-if (noArgs()) {
-  handlePipeInputUpload()
-} else {
-  handleArgUpload()
-}
+getOptions()
+  .then(function(options) {
+    if (noArgs()) {
+      handlePipeInputUpload(options)
+    } else {
+      handleArgUpload(options)
+    }
+  })
+  .catch(function(err) {
+    console.log(err)
+  })
 
-function handleArgUpload() {
+
+function handleArgUpload(options) {
   var filePaths = program.args
 
   filePaths.forEach(function(path) {
@@ -30,7 +38,7 @@ function handleArgUpload() {
 
   var uploads = []
   filePaths.forEach(function(path) {
-    uploads.push(upload(path, "dropbox"))
+    uploads.push(upload(path, "dropbox", options))
   })
   Promise.all(uploads)
   .then(function (urls) {
@@ -40,7 +48,7 @@ function handleArgUpload() {
   })
 }
 
-function handlePipeInputUpload() {
+function handlePipeInputUpload(options) {
   tmp.file(function(err, path, fd, cleanup) {
     if (err) {
       console.log(err)
@@ -49,7 +57,7 @@ function handlePipeInputUpload() {
 
     writeInputToFile(path)
       .then(function() {
-        return upload(path, "Dropbox")
+        return upload(path, "dropbox", options)
       })
       .then(console.log)
       .catch(function(err) {
