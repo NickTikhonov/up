@@ -60,9 +60,6 @@ function handleArgUpload(options) {
 }
 
 function handlePipeInputUpload(options) {
-  var bob = new Bobber()
-  bob.start()
-
   tmp.file({
     postfix: '.txt'
   }, function(err, path, fd, cleanup) {
@@ -71,8 +68,11 @@ function handlePipeInputUpload(options) {
       process.exit(1)
     }
 
+    var bob = new Bobber()
+
     writeInputToFile(path)
       .then(function() {
+        bob.start()
         return upload(path, "dropbox", options)
       })
       .then(function(url) {
