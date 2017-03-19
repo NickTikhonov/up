@@ -2,8 +2,9 @@
 var program = require("commander")
 
 program
-  .arguments('<file>')
-  .action(function(file) {
-    console.log(file)
-  })
+  .arguments('<file..>')
   .parse(process.argv)
+
+if (program.args.length === 0) {
+  console.error("please provide at least one <file> argument.")
+}
