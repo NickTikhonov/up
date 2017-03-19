@@ -8,22 +8,18 @@ const md5 = require("md5")
 
 const errors = require("../errors.js")
 
-function getKey() {
-  return process.env.UP_DROPBOX_KEY
-}
-
 function genName(filePath) {
   let nonce = md5(new Date().toISOString()).substr(-10)
   return `/${nonce}_${path.basename(filePath)}`
 }
 
-function upload(filePath) {
+function upload(filePath, authOptions) {
   return new Promise(function(resolve, reject) {
-    if(!getKey()) {
+    if(!authOptions.accessToken) {
       reject(errors.NO_SECRET)
     } else {
       let dbx = new Dropbox({
-        accessToken: getKey()
+        accessToken: authOptions.accessToken
       })
 
       dbx.filesUpload({
@@ -35,9 +31,7 @@ function upload(filePath) {
           short_url:true
         })
       })
-      .then(function(result) {
-        resolve(result.url)
-      })
+      .then(resolve)
       .catch(function(err) {
         let actualError = JSON.parse(err.error)
         if(actualError.error.reason[".tag"] == "conflict") {

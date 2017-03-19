@@ -19,7 +19,7 @@ function genRequestJson(filePath) {
   return reqJson
 }
 
-function upload(path) {
+function upload(path, authOptions) {
   return new Promise(function(resolve, reject) {
 
     request.post({
