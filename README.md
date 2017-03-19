@@ -1,16 +1,16 @@
 up
-=======
-#### ✨ painless, context-aware file uploads from the command line ✨
+=========================
+### ✨ painless, context-aware file uploads from the command line ✨
 
 ![Demo](http://nt34.host.cs.st-andrews.ac.uk/up.mov.gif)
 
-### installation
+## installation
 
 ```
 npm install -g up-cli
 ```
 
-### use
+## use
 
 single file:
 
@@ -30,7 +30,7 @@ command output:
 cat /usr/share/dict | grep "aba" | up
 ```
 
-### features
+## features
 
 * Easy upload to existing storage providers
   * [GitHub Gist](gist.github.com) for source files
