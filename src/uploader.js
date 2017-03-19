@@ -1,15 +1,11 @@
 "use strict"
 
-const dropboxUp = require("./dropboxUp.js")
+const providers = require("./providers")
 const errors = require("./errors.js")
 
-const PROVIDERS = {
-    "Dropbox":dropboxUp
-}
-
 function upload(path, provider) {
-    if(provider in PROVIDERS) {
-        return PROVIDERS[provider](path)
+    if(provider in providers) {
+        return providers[provider](path)
     }
     else {
         return Promise.reject(errors.PROVIDER_NOT_FOUND)

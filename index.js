@@ -2,42 +2,37 @@
 "use strict"
 
 var fs = require("fs")
+
 var program = require("commander")
 var tmp = require("tmp")
 
-var uploader = require("./src/uploader.js")
+var upload = require("./src/uploader.js")
 
 program
   .arguments("<file..>")
   .parse(process.argv)
 
-if (program.args.length === 0) {
-  tmp.file(function(err, path, fd, cleanup) {
-    if (err) {
-      console.log(err)
-    }
-
-    writeInputToFile(path)
-      .then(function() {
-          uploader(path, "Dropbox")
-          .then(console.log)
-          .catch(console.error)
-      })
-      .catch(function(err) {
-        //TODO: die here
-        console.log(err)
-      })
-  })
+if (noArgs()) {
+  handlePipeInputUpload()
 } else {
-  var uploads = []
-  program.args.forEach(function(path) {
+  handleArgUpload()
+}
+
+function handleArgUpload() {
+  var filePaths = program.args
+
+  filePaths.forEach(function(path) {
     if (!validPath(path)) {
+      console.error("path: " + path + " is not valid. exiting.")
       process.exit(1)
     }
-    else {
-      uploads.push(uploader(path, "Dropbox"))
-    }
   })
+
+  var uploads = []
+  filePaths.forEach(function(path) {
+    uploads.push(upload(path, "Dropbox"))
+  })
+
   Promise.all(uploads)
   .then(function (urls) {
     urls.forEach(function(url) {
@@ -45,6 +40,29 @@ if (program.args.length === 0) {
     })
   })
 }
+
+function handlePipeInputUpload() {
+  tmp.file(function(err, path, fd, cleanup) {
+    if (err) {
+      console.log(err)
+      process.exit(1)
+    }
+
+    writeInputToFile(path)
+      .then(function() {
+        return upload(path, "Dropbox")
+      })
+      .then(console.log)
+      .catch(function(err) {
+        console.log(err)
+      })
+  })
+}
+
+function noArgs() {
+  return program.args.length === 0
+}
+
 
 function validPath(path) {
   if (fs.existsSync(path)) {
