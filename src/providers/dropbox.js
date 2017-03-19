@@ -31,7 +31,7 @@ function upload(filePath, authOptions) {
           short_url:true
         })
       })
-      .then(resolve)
+      .then(function(result) {resolve(result.url)})
       .catch(function(err) {
         let actualError = JSON.parse(err.error)
         if(actualError.error.reason[".tag"] == "conflict") {
