@@ -33,8 +33,8 @@ cat /usr/share/dict/words | grep "aba" | up
 ## features
 
 * Easy upload to existing storage providers
-  * [GitHub Gist](gist.github.com) for source files
-  * [DropBox](dropbox.com) for everything else
+  * [GitHub Gist](http://gist.github.com) for source files
+  * [DropBox](http://dropbox.com) for everything else
   * more to be added soon!
 * Configuration through `~/.up.json`
 
