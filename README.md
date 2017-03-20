@@ -30,6 +30,12 @@ command output:
 cat /usr/share/dict/words | grep "aba" | up
 ```
 
+
+specify your preferred provider:
+```
+up --provider transfer-sh file.txt
+```
+
 ## features
 
 * Easy upload to existing storage providers
