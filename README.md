@@ -35,6 +35,7 @@ cat /usr/share/dict/words | grep "aba" | up
 * Easy upload to existing storage providers
   * [GitHub Gist](http://gist.github.com) for source files
   * [DropBox](http://dropbox.com) for everything else
+  * [Transfer.sh](https://transfer.sh/) and [Rust playground](https://play.rust-lang.org/) can be used using the `--provider` flag
   * more to be added soon!
 * Configuration through `~/.up.json`
 
