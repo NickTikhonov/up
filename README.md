@@ -42,6 +42,11 @@ cat /usr/share/dict/words | grep "aba" | up
 
 Feel free to contribute by [requesting a feature](https://github.com/NickTikhonov/up/issues/new), [submitting a bug](https://github.com/NickTikhonov/up/issues/new) or contributing code.
 
+## Authors
+
+* Nick Tikhonov
+* Alex Ungurianu
+
 ## License
 
 MIT

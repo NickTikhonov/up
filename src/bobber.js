@@ -55,22 +55,25 @@ class Bobber {
   }
 
   bob() {
-    // console.log("Bobbing");
     process.stdout.cursorTo(0)
     process.stdout.write(this.ANIMATION[this.frameIdx])
     this.frameIdx = (this.frameIdx + 1) % this.ANIMATION.length
   }
 
   start() {
-    process.stdout.write("\x1b[34m")
-    this.interval = setInterval(() => this.bob(), 50)
+    if (process.stdout) {
+      process.stdout.write("\x1b[34m")
+      this.interval = setInterval(() => this.bob(), 50)
+    }
   }
 
   stop() {
-    process.stdout.clearLine()
-    process.stdout.cursorTo(0)
-    process.stdout.write("\x1b[0m")
-    clearInterval(this.interval)
+    if (process.stdout) {
+      process.stdout.clearLine()
+      process.stdout.cursorTo(0)
+      process.stdout.write("\x1b[0m")
+      clearInterval(this.interval)
+    }
   }
 }
 
