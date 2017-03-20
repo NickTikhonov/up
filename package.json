@@ -4,10 +4,10 @@
   "description": "Simple file uploads from the command line",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src -d lib"
   },
   "bin": {
-    "up": "./index.js"
+    "up": "./lib/index.js"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,8 @@
     "request": "^2.81.0",
     "tmp": "0.0.31",
     "transfer-sh": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0"
   }
 }

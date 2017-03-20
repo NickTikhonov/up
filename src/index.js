@@ -6,10 +6,10 @@ var fs = require("fs")
 var program = require("commander")
 var tmp = require("tmp")
 
-var upload = require("./src/uploader")
-var getOptions = require("./src/options")
-var pathIsSource = require("./src/fileType")
-var Bobber = require("./src/bobber")
+var upload = require("./uploader")
+var getOptions = require("./options")
+var pathIsSource = require("./fileType")
+var Bobber = require("./bobber")
 
 program
   .option("-p, --provider <provider>", "The name of the provider")
