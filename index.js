@@ -12,15 +12,16 @@ var pathIsSource = require("./src/fileType")
 var Bobber = require("./src/bobber")
 
 program
+  .option("-p, --provider <provider>", "The name of the provider")
   .arguments("<file..>")
   .parse(process.argv)
 
 getOptions()
   .then(function(options) {
     if (noArgs()) {
-      handlePipeInputUpload(options)
+      handlePipeInputUpload(options, program.provider)
     } else {
-      handleArgUpload(options)
+      handleArgUpload(options, program.provider)
     }
   })
   .catch(function(err) {
@@ -28,7 +29,7 @@ getOptions()
   })
 
 
-function handleArgUpload(options) {
+function handleArgUpload(options, forcedProvider) {
   var filePaths = program.args
 
   filePaths.forEach(function(path) {
@@ -44,10 +45,15 @@ function handleArgUpload(options) {
   var uploads = []
   filePaths.forEach(function(path) {
     uploads.push(new Promise(function(resolve, reject) {
-      pathIsSource(path).then(function(isSource) {
-        var provider = isSource ? "gist" : "dropbox"
-        upload(path, provider, options).then(resolve).catch(reject)
-      }).catch(reject)
+      if(forcedProvider) {
+        upload(path, forcedProvider, options).then(resolve).catch(reject)
+      }
+      else {
+        pathIsSource(path).then(function(isSource) {
+          var provider = isSource ? "gist" : "dropbox"
+          upload(path, provider, options).then(resolve).catch(reject)
+        }).catch(reject)
+      }
     }))
   })
   Promise.all(uploads)
@@ -56,6 +62,10 @@ function handleArgUpload(options) {
     urls.forEach(function(url) {
       console.log(url)
     })
+  })
+  .catch(function (err) {
+    bob.stop();
+    console.log(err)
   })
 }
 
