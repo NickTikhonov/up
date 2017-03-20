@@ -77,13 +77,17 @@ function handlePipeInputUpload(options) {
       console.log(err)
       process.exit(1)
     }
+    var provider = "dropbox"
+    if(program.provider) {
+      provider = program.provider
+    }
 
     var bob = new Bobber()
 
     writeInputToFile(path)
       .then(function() {
         bob.start()
-        return upload(path, "dropbox", options)
+        return upload(path, provider, options)
       })
       .then(function(url) {
         bob.stop()
