@@ -1,7 +1,5 @@
-"use strict"
 
-
-var hasUnicode = require("has-unicode")
+import hasUnicode from "has-unicode"
 
 class Bobber {
   constructor() {

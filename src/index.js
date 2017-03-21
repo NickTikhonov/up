@@ -4,10 +4,10 @@
 import "babel-core/register"
 import "babel-polyfill"
 
-var fs = require("fs")
+import fs from "fs"
 
-var program = require("commander")
-var tmp = require("tmp")
+import program from "commander"
+import tmp from "tmp"
 
 import upload from "./uploader"
 import getOptions from "./options"
@@ -35,18 +35,18 @@ getOptions()
 function handleArgUpload(options, forcedProvider) {
   var filePaths = program.args
 
-  filePaths.forEach(function(path) {
+  for(let path of filePaths) {
     if (!validPath(path)) {
       console.error("path: " + path + " is not valid. exiting.")
       process.exit(1)
     }
-  })
+  }
 
   var bob = new Bobber()
   bob.start()
 
   var uploads = []
-  filePaths.forEach(function(path) {
+  for(let path of filePaths) {
     uploads.push(new Promise(function(resolve, reject) {
       if(forcedProvider) {
         upload(path, forcedProvider, options).then(resolve).catch(reject)
@@ -58,7 +58,7 @@ function handleArgUpload(options, forcedProvider) {
         }).catch(reject)
       }
     }))
-  })
+  }
   Promise.all(uploads)
   .then(function (urls) {
     bob.stop()
@@ -118,7 +118,7 @@ function validPath(path) {
   return false
 }
 
-function writeInputToFile(filePath) {
+async function writeInputToFile(filePath) {
   return new Promise(function(resolve, reject) {
     var streamData = ""
 
