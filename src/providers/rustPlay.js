@@ -1,13 +1,9 @@
 "use strict"
 
-const gistUp = require("./gist")
+import gistUp from "./gist"
 
-function upload(path) {
-  return gistUp(path)
-  .then(function (url) {
-    var gistId = url.split("/").slice(-1)[0]
-    return `https://play.rust-lang.org/?gist=${gistId}&version=stable&backtrace=0`
-  })
+export default async function upload(path) {
+  const url = await gistUp(path)
+  const gistId = url.split("/").slice(-1)[0]
+  return `https://play.rust-lang.org/?gist=${gistId}&version=stable&backtrace=0`
 }
-
-module.exports = upload

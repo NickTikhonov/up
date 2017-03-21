@@ -8,39 +8,37 @@ const md5 = require("md5")
 
 const errors = require("../errors.js")
 
-function upload(filePath, authOptions) {
-  return new Promise(function(resolve, reject) {
-    if(!authOptions.accessToken) {
-      reject(errors.NO_SECRET)
-    } else {
-      let dbx = new Dropbox({
-        accessToken: authOptions.accessToken
-      })
+export default async function upload(filePath, authOptions) {
+  if(!authOptions.accessToken) {
+    throw errors.NO_SECRET
+  }
 
-      fs.readFile(filePath, function(err, data) {
-        dbx.filesUpload({
-          path: path.join("/", filePath),
-          contents: data,
-          autorename:true
-        }).then(function(response) {
-          return dbx.sharingCreateSharedLink({
-            path: response.path_lower,
-            short_url:true
-          })
-        })
-        .then(function(result) {resolve(result.url)})
-        .catch(function(err) {
-          console.log(err);
-          let actualError = JSON.parse(err.error)
-          if(actualError.error.reason[".tag"] == "conflict") {
-            reject(errors.FILE_UPLOAD_CONFLICT)
-          } else {
-            reject(errors.UNKNOWN_ERROR)
-          }
-        })
-      })
-    }
+  let dbx = new Dropbox({
+    accessToken: authOptions.accessToken
   })
-}
 
-module.exports = upload
+  let data = await new Promise((resolve,reject) =>
+    fs.readFile(filePath, (err, data) => err ? reject(err) : resolve(data))
+  )
+
+  try {
+    let uploadResult = await dbx.filesUpload({
+      path: path.join("/", filePath),
+      contents: data,
+      autorename:true
+    })
+    let sharingResult = await dbx.sharingCreateSharedLink({
+      path: uploadResult.path_lower,
+      short_url:true
+    })
+    return sharingResult.url
+  } catch(err) {
+    console.log(err);
+    let actualError = JSON.parse(err.error)
+    if(actualError.error.reason[".tag"] == "conflict") {
+      reject(errors.FILE_UPLOAD_CONFLICT)
+    } else {
+      reject(errors.UNKNOWN_ERROR)
+    }
+  }
+}

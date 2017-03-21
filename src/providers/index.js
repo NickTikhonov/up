@@ -1,11 +1,11 @@
-var dropbox = require("./dropbox.js")
-var gist = require("./gist.js")
-var rustPlay = require("./rustPlay.js")
-var transferSh = require("./transferSh.js")
+import dropbox from "./dropbox.js"
+import gist from "./gist.js"
+import rustPlayground from "./rustPlay.js"
+import transferSh from "./transferSh.js"
 
-module.exports = {
-  "dropbox": dropbox,
-  "gist": gist,
-  "rust-play": rustPlay,
-  "transfer-sh": transferSh
+export default {
+  "dropbox":dropbox,
+  "gist":gist,
+  "rust-playground":rustPlayground,
+  "transfer-sh":transferSh
 }

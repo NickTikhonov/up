@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 "use strict"
+// Make babel happy
+import "babel-core/register"
+import "babel-polyfill"
 
 var fs = require("fs")
 
 var program = require("commander")
 var tmp = require("tmp")
 
-var upload = require("./uploader")
-var getOptions = require("./options")
-var pathIsSource = require("./fileType")
-var Bobber = require("./bobber")
+import upload from "./uploader"
+import getOptions from "./options"
+import pathIsSource from "./fileType"
+import Bobber from "./bobber"
 
 program
   .option("-p, --provider <provider>", "The name of the provider")

@@ -1,15 +1,13 @@
 "use strict"
 
-const providers = require("./providers")
-const errors = require("./errors.js")
+import providers from "./providers"
+import errors from "./errors"
 
-function upload(path, provider, options) {
+export default async function upload(path, provider, options) {
     if(provider in providers) {
         return providers[provider](path, options.auth[provider])
     }
     else {
-        return Promise.reject(errors.PROVIDER_NOT_FOUND)
+        throw errors.PROVIDER_NOT_FOUND
     }
 }
-
-module.exports = upload
